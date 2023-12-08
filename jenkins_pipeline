@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+    environment{
+        user = 'abhya'
+    }
+    parameters{
+        string(name: 'location' ,  defaultValue: 'gurgaon' , description: 'where do u live ?')
+        booleanParam(name: 'ISFEMALE' ,  defaultValue: 'true' , description: '')
+        choice(name: 'priority' ,  choices: ['average' , 'medium' , 'high'] , description: '')
+    }
+    
+    stages {
+        stage('build') {
+             environment{
+                     USERID = '26'
+                  }
+            steps {
+                echo 'build'
+               bat '''
+                dir
+                ipconfig
+                echo %priority%
+                echo %ISFEMALE%
+                echo %location%
+                echo %user%
+                echo  %BUILD_ID%
+                echo %USERID%
+               '''
+            }
+        }
+             stage('test') {
+            steps {
+                echo 'test'
+                
+            }
+             }
+             stage('deploy') {
+                
+            steps {
+                
+                echo 'deploy'
+                }
+             }
+              stage('continue ? ') {
+                input{
+                    
+                    message "show we continue ? "
+                    ok "yes you can "
+                    
+                }
+            steps {
+                
+                echo 'deploy'
+                }
+             }
+             stage('prod ') {
+            steps {
+                echo 'prod '
+            }
+        }
+    }
+    post{
+        always{
+            echo 'work'
+        }
+        failure{
+            echo 'on failure'
+        }
+        success{
+            echo ' on success'
+        }
+    }
+}
